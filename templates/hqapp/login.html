@@ -1,0 +1,195 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+<title>Home</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- font files  -->
+<link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Nunito:400,300,700' rel='stylesheet' type='text/css'>
+<!-- /font files  -->
+<!-- css files -->
+<link href="../../static/css/style.css" rel='stylesheet' type='text/css' media="all" />
+<!-- /css files -->
+</head>
+<body>
+<h1>Login</h1>
+<div class="log">
+	<div class="content1">
+		<h2>Login</h2>
+		<form method="post" action="{% url 'loginlogic' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+			<input type="text" name="userid" value="USERNAME"  id="uname"   onfocus="this.value = '';" onblur="checkname()">
+            <div id="u_span1"></div>
+			<input type="password" name="psw" id="upwd" value="PASSWORD" onfocus="this.value = '';" onblur="checkpwd()">
+            <div id="u_span2"></div>
+
+			<div class="button-row">
+				<input type="button" class="sign-in"   id="nn" value="Sign In"  onclick="form_sub()">
+                <div id="u_span3"></div>
+				<input type="reset" class="reset" value="Reset" onclick="reset()">
+				<div class="clear"></div>
+			</div>
+		</form>
+	</div>
+
+	<div class="clear"></div>
+</div>
+<div class="footer">
+	<p>Copyright &copy;  <a href="http://www.baizhiedu.com/" target="_blank" title="百知教育">百知教育</a></p>
+</div>
+
+</body>
+</html>
+
+<script>
+var glob1=0;
+var glob2=0;
+
+function form_sub(){
+   upwd = document.getElementById("upwd").value;
+   lname = document.getElementById("uname").value;
+    url = "{% url 'check' %}?upwd="+upwd+"&&lname="+lname;
+                var xhr;
+                if (window.ActiveXObject )
+            {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP")
+            }else if(window.XMLHttpRequest)
+            {
+                xhr = new XMLHttpRequest()
+            }
+                xhr.open("get",url,true);
+                xhr.send();
+
+
+                xhr.onreadystatechange = function()
+                {
+                    if(xhr.readyState ===4 && xhr.status === 200){
+                        result=xhr.responseText;
+                        console.log(result)
+                        if(result==="ok"){
+                        nn=document.getElementById("nn")
+                        nn.type = 'submit'
+                            console.log('type')
+                        }
+
+                        if(result==="no"){
+                            alert("用户名或密码错误")
+                        }
+                    }
+                }
+}
+
+
+
+
+
+
+function checkpwd(){
+                lpwd = document.getElementById("upwd").value;
+                console.log(lpwd);
+                 url = "{% url 'checklpwd' %}?lpwd="+lpwd;
+                var xhr;
+                if (window.ActiveXObject )
+            {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP")
+            }else if(window.XMLHttpRequest)
+            {
+                xhr = new XMLHttpRequest()
+            }
+                xhr.open("get",url,true);
+                xhr.send();
+                spn = document.getElementById("u_span2");
+                spn.innerHTML = "<img src='{% static 'images/5-121204193R0-50.gif' %}' width=\"30px\" >";
+                xhr.onreadystatechange = function()
+                {
+                    if(xhr.readyState ===4 && xhr.status === 200){
+                        result=xhr.responseText;
+                        console.log(result)
+                        if(result==="ok"){
+                            console.log('对的')
+                              if(!/^((([a-z])+([@])+)|(([@])+([a-z])+)|(([A-Z])+([@])+)|(([@])+([A-Z])+)|(([a-z])+([A-Z])+)|(([A-Z])+([a-z])+))$/.test(lpwd)){
+                                spn.innerHTML = "请输入正确的格式"
+
+                            }
+                            if(/^((([a-z])+([@])+)|(([@])+([a-z])+)|(([A-Z])+([@])+)|(([@])+([A-Z])+)|(([a-z])+([A-Z])+)|(([A-Z])+([a-z])+))$/.test(lpwd)){
+                                spn.innerHTML = "正确"
+                                glob2 = "b"
+                           }
+                        }
+
+                        if(result==="null"){
+                            spn.innerHTML = "密码不能为空"
+                        }
+                    }
+                }
+}
+
+
+
+
+
+
+function checkname(){
+                lname = document.getElementById("uname").value;
+                console.log(lname);
+                 url = "{% url 'checklname' %}?lname="+lname;
+                var xhr;
+                if (window.ActiveXObject )
+            {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP")
+            }else if(window.XMLHttpRequest)
+            {
+                xhr = new XMLHttpRequest()
+            }
+                xhr.open("get",url,true);
+                xhr.send();
+                spn = document.getElementById("u_span1");
+                spn.innerHTML = "<img src='{% static 'images/5-121204193R0-50.gif' %}' width=\"30px\" >";
+                xhr.onreadystatechange = function()
+                {
+                    if(xhr.readyState ===4 && xhr.status === 200){
+                        result=xhr.responseText;
+                        console.log(result)
+                        if(result==="ok"){
+                            console.log('对的')
+                            if(!/^[^0-9][a-zA-Z0-9_]{1,128}$/.test(lname)){
+                                spn.innerHTML = "请输入正确的格式"
+
+                            }
+                            if(/^[^0-9][a-zA-Z0-9_]{1,128}$/.test(lname)){
+
+                                spn.innerHTML = "正确"
+                                glob1 = "a"
+                           }
+
+                        }
+
+                        if(result==="null"){
+                            spn.innerHTML = "用户名不能为空"
+                        }
+                    }
+                }}
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+

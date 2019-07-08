@@ -1,0 +1,263 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+<title>Home</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- font files  -->
+<link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Nunito:400,300,700' rel='stylesheet' type='text/css'>
+<!-- /font files  -->
+<!-- css files -->
+<link href="../../static/css/style.css" rel='stylesheet' type='text/css' media="all" />
+<!-- /css files -->
+</head>
+<body>
+<h1>Register</h1>
+<div class="log">
+	<div class="content2">
+		<h2>Register</h2>
+		<form method="post" action="{% url 'registerlogic' %}">
+            {% csrf_token %}
+			<input type="text" name="userid"   id="uname" value="USERNAME" onfocus="this.value = '';"   onblur="checkname()"> <div id="u_span1"></div>
+
+			<input type="tel" name="usrtel"  id="uphone" value="PHONE" onfocus="this.value = '';" onblur="checkphone()">
+            <div id="u_span2"></div>
+
+
+			<input type="email" name="email"   id="uuemail"  value="EMAIL ADDRESS" onfocus="this.value = '';" onblur="checkemail()">
+            <div id="u_span3"></div>
+
+			<input type="password"   name="psw"   id="upwd"      value="PASSWORD" onfocus="this.value = '';" onblur="checkpwd()">
+
+            <div id="u_span4"></div>
+
+			<input type="button" class="register" value="Register"  id="J_submitRegister" onclick="form_sub()">
+		</form>
+	</div>
+	<div class="clear"></div>
+</div>
+<div class="footer">
+	<p>Copyright &copy;  <a href="http://www.baizhiedu.com/" target="_blank" title="百知教育">百知教育</a></p>
+</div>
+
+</body>
+</html>
+
+
+<script>
+ var glob1=0;
+ var glob2=0;
+ var glob3=0;
+ var glob4=0;
+
+
+
+ function form_sub(){
+    console.log(glob2)
+    console.log(glob1)
+    console.log(glob3)
+    console.log(glob4)
+    J_submitRegister=document.getElementById("J_submitRegister")
+    if (glob1==="a" && glob2==="b" && glob3==="c" && glob4==="d"){
+        J_submitRegister.type = 'submit'
+        console.log("我时submit")
+    }
+    else{
+        alert("请保证输入合法")
+    }
+}
+
+
+
+
+function checkpwd(){
+                rpwd = document.getElementById("upwd").value;
+                console.log(rpwd);
+                 url = "{% url 'checkrpwd' %}?rpwd="+rpwd;
+                var xhr;
+                if (window.ActiveXObject )
+            {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP")
+            }else if(window.XMLHttpRequest)
+            {
+                xhr = new XMLHttpRequest()
+            }
+                xhr.open("get",url,true);
+                xhr.send();
+                spn = document.getElementById("u_span4");
+                spn.innerHTML = "<img src='{% static 'images/5-121204193R0-50.gif' %}' width=\"30px\" >";
+                xhr.onreadystatechange = function()
+                {
+                    if(xhr.readyState ===4 && xhr.status === 200){
+                        result=xhr.responseText;
+                        console.log(result)
+                        if(result==="ok"){
+                            console.log('对的')
+                              if(!/^((([a-z])+([@])+)|(([@])+([a-z])+)|(([A-Z])+([@])+)|(([@])+([A-Z])+)|(([a-z])+([A-Z])+)|(([A-Z])+([a-z])+))$/.test(rpwd)){
+                                spn.innerHTML = "请输入正确的格式"
+
+                            }
+                            if(/^((([a-z])+([@])+)|(([@])+([a-z])+)|(([A-Z])+([@])+)|(([@])+([A-Z])+)|(([a-z])+([A-Z])+)|(([A-Z])+([a-z])+))$/.test(rpwd)){
+                                spn.innerHTML = "正确"
+                                glob4 = "d"
+                           }
+                        }
+
+                        if(result==="null"){
+                            spn.innerHTML = "密码不能为空"
+                        }
+                    }
+                }
+}
+
+
+
+
+
+
+
+
+function checkemail(){
+                remail = document.getElementById("uuemail").value;
+                console.log(remail);
+                 url = "{% url 'checkremail' %}?remail="+remail;
+                var xhr;
+                if (window.ActiveXObject )
+            {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP")
+            }else if(window.XMLHttpRequest)
+            {
+                xhr = new XMLHttpRequest()
+            }
+                xhr.open("get",url,true);
+                xhr.send();
+                spn = document.getElementById("u_span3");
+                spn.innerHTML = "<img src='{% static 'images/5-121204193R0-50.gif' %}' width=\"30px\" >";
+                xhr.onreadystatechange = function()
+                {
+                    if(xhr.readyState ===4 && xhr.status === 200){
+                        result=xhr.responseText;
+                        console.log(result)
+                        if(result==="ok"){
+                            console.log('对的')
+                              if(!/^\w+@\w+.\w+$/.test(remail)){
+                                spn.innerHTML = "请输入正确的格式"
+
+                            }
+                            if(/^\w+@\w+.\w+$/.test(remail)){
+                                {#spn.innerHTML = "<img src='{% static 'images/right.jpg' %}' width=\"30px\" >"#}
+                                spn.innerHTML = "正确"
+                                glob3 = "c"
+                           }
+                        }
+
+                        if(result==="null"){
+                            spn.innerHTML = "邮箱不能为空"
+                        }
+                    }
+                }
+}
+
+
+
+
+
+
+function checkname(){
+                rname = document.getElementById("uname").value;
+                console.log(name);
+                 url = "{% url 'checkrname' %}?rname="+rname;
+                var xhr;
+                if (window.ActiveXObject )
+            {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP")
+            }else if(window.XMLHttpRequest)
+            {
+                xhr = new XMLHttpRequest()
+            }
+                xhr.open("get",url,true);
+                xhr.send();
+                spn = document.getElementById("u_span1");
+                spn.innerHTML = "<img src='{% static 'images/5-121204193R0-50.gif' %}' width=\"30px\" >";
+                xhr.onreadystatechange = function()
+                {
+                    if(xhr.readyState ===4 && xhr.status === 200){
+                        result=xhr.responseText;
+                        console.log(result)
+                        if(result==="ok"){
+                            console.log('对的')
+                              if(!/^[^0-9][a-zA-Z0-9_]{1,128}$/.test(rname)){
+                                spn.innerHTML = "请输入正确的格式"
+
+                            }
+                            if(/^[^0-9][a-zA-Z0-9_]{1,128}$/.test(rname)){
+                                {#spn.innerHTML = "<img src='{% static 'images/right.jpg' %}' width=\"30px\" >"#}
+                                spn.innerHTML = "正确"
+                                glob1 = "a"
+                           }
+                        }
+
+                        if(result==="null"){
+                            spn.innerHTML = "用户名不能为空"
+                        }
+                    }
+                }
+}
+
+{#^1[35678]\d{9}$#}
+
+function checkphone(){
+                rphone = document.getElementById("uphone").value;
+                console.log(rphone);
+                 url = "{% url 'checkrphone' %}?rphone="+rphone;
+                var xhr;
+                if (window.ActiveXObject )
+            {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP")
+            }else if(window.XMLHttpRequest)
+            {
+                xhr = new XMLHttpRequest()
+            }
+                xhr.open("get",url,true);
+                xhr.send();
+                spn = document.getElementById("u_span2");
+                spn.innerHTML = "<img src='{% static 'images/5-121204193R0-50.gif' %}' width=\"30px\" >";
+                xhr.onreadystatechange = function()
+                {
+                    if(xhr.readyState ===4 && xhr.status === 200){
+                        result=xhr.responseText;
+                        console.log(result)
+                        if(result==="ok"){
+                            console.log('对的')
+                              if(!/^1[35678]\d{9}$/.test(rphone)){
+                                spn.innerHTML = "请输入正确的格式"
+
+                            }
+                            if(/^1[35678]\d{9}$/.test(rphone)){
+                                {#spn.innerHTML = "<img src='{% static 'images/right.jpg' %}' width=\"30px\" >"#}
+                                spn.innerHTML = "正确"
+                                glob2 = "b"
+                           }
+                        }
+
+                        if(result==="null"){
+                            spn.innerHTML = "手机号不能为空"
+                        }
+                    }
+                }
+}
+
+
+
+
+
+
+
+
+
+
+</script>
